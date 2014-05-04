@@ -8,7 +8,7 @@
 ###########################################################################
 #  Change values here							  #
 #									  #
-SDKVERSION="7.0"							  #
+SDKVERSION="7.1"							  #
 #									  #
 ###########################################################################
 #									  #
@@ -22,7 +22,7 @@ PACKAGE="libstrophe"
 
 rm -rf "${CURRENTPATH}/libstrophe"
 
-git clone git@github.com:strophe/libstrophe.git
+git clone https://github.com/loongw/libstrophe.git
 
 cp "${CURRENTPATH}/tls_securetransport.c" "${CURRENTPATH}/libstrophe/src/"
 
