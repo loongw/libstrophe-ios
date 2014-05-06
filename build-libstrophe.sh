@@ -20,25 +20,8 @@ CURRENTPATH=`pwd`
 DEVELOPER=`xcode-select --print-path`
 PACKAGE="libstrophe"
 
-rm -rf "${CURRENTPATH}/libstrophe"
 
-git clone https://github.com/loongw/libstrophe.git
-
-cp "${CURRENTPATH}/tls_securetransport.c" "${CURRENTPATH}/libstrophe/src/"
-
-cp -R "${CURRENTPATH}/expat/" "${CURRENTPATH}/libstrophe/src/"
-
-cp "${CURRENTPATH}/Makefile.am" "${CURRENTPATH}/libstrophe/"
-
-cd "${CURRENTPATH}/libstrophe"
-
-#sed -ie "s/-lssl -lcrypto -lz/-lz/g" "Makefile.am"
-#sed -ie "s/tls_openssl.c/tls_securetransport.c/g" "Makefile.am"
-sed -ie "s/AC_CHECK_HEADER(openssl\/ssl.h/#AC_CHECK_HEADER(sslblahblah/g" "configure.ac"
-sed -ie "s/AC_CHECK_HEADER(expat.h/AC_CHECK_HEADER(stdlib.h/g" "configure.ac"
-sed -ie "s/#include <expat.h>/#include \"expat.h\"/g" "src/parser_expat.c"
-
-./bootstrap.sh
+cd libstrophe
 
 ############
 # iPhone Simulator
@@ -85,7 +68,7 @@ mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk"
 
 echo "Configure ${PACKAGE} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 
-CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
+CC="${DEVELOPER}/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -g -arch ${ARCH} -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk -pipe -Os -gdwarf-2 -miphoneos-version-min=${SDKVERSION}" ./configure --host=${ARCH}-apple-darwin
 
 #sed -ie "s!^CFLAG=!CFLAG=-isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk !" "Makefile"
 #sed -ie "s!^CFLAG=!CFLAG=-miphoneos-version-min=${SDKVERSION} !" "Makefile"
@@ -147,6 +130,5 @@ echo "Building done."
 echo "Cleaning up..."
 rm -rf ${CURRENTPATH}/src
 rm -rf ${CURRENTPATH}/bin
-rm -rf ${CURRENTPATH}/libstrophe
 echo "Done."
 
